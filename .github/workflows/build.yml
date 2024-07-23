@@ -15,16 +15,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # - name: Install Rust
-        # Removed `uses: actions/setup-node@v3` (optional for your project)
-        # with:
-        #   node-version: '16'
-
       - name: Install Rustup
         run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -y  # Added -y flag
 
       - name: Install stable Rust (optional)
-        run: rustup install 0.1.0
+        run: rustup install stable  # Install latest stable version
 
       - name: Configure Cargo credentials
         run: |
