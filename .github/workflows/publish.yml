@@ -1,0 +1,78 @@
+name: Publish Package
+
+on:
+  push:
+    branches:
+      - publishghrc  # Trigger workflow on pushes to the master branch
+
+permissions:
+  packages: write
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Rust
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+      - name: Add Rust to PATH
+        run: echo "${HOME}/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Build release
+        run: cargo build --release
+
+      - name: Test release (optional)
+        run: cargo test --release  # Uncomment to run tests
+
+  publish_crates_io:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Rust
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+      - name: Add Rust to PATH
+        run: echo "${HOME}/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Configure Cargo credentials
+        run: |
+          mkdir -p ~/.cargo
+          echo '[registries.crates-io]' > ~/.cargo/config.toml
+          echo 'token = "${{ secrets.CARGO_REGISTRY_TOKEN }}"' >> ~/.cargo/config.toml
+
+      - name: Publish to crates.io
+        run: cargo publish
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+  publish_github_packages:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Rust
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+      - name: Add Rust to PATH
+        run: echo "${HOME}/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Configure Cargo credentials for GitHub Packages
+        run: |
+          mkdir -p ~/.cargo
+          echo '[registries.github]' > ~/.cargo/config.toml
+          echo 'index = "https://github.com/rust-lang/crates.io-index"' >> ~/.cargo/config.toml
+          echo 'token = "${{ secrets.GITHUB_TOKEN }}"' >> ~/.cargo/config.toml
+
+      - name: Publish to GitHub Packages
+        run: cargo publish --registry github
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
