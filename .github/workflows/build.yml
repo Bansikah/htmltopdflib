@@ -2,8 +2,8 @@ name: Publish Release
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - master  # Trigger workflow on pushes to the master branch
 
 permissions:
   packages: write
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Rust
         uses: actions/setup-rust@v1
         with:
-          rust-version: '0.1.0'  # Replace with the version of Rust you're using
+          rust-version: '0.1.0'  # Specify the Rust version you're using
 
       - name: Install cargo-credential
         run: cargo install cargo-credential
@@ -44,7 +44,7 @@ jobs:
       - name: Set up Rust
         uses: actions/setup-rust@v1
         with:
-          rust-version: '0.1.0'  # Replace with the version of Rust you're using
+          rust-version: '0.1.0'  # Specify the Rust version you're using
 
       - name: Install cargo-credential
         run: cargo install cargo-credential
