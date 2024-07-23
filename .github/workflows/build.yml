@@ -20,7 +20,7 @@ jobs:
         run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
       - name: Add Rust to PATH
-        run: echo "::add-path::${HOME}/.cargo/bin"
+        run: echo "${HOME}/.cargo/bin" >> $GITHUB_PATH
 
       - name: Build release
         run: cargo build --release
@@ -39,7 +39,7 @@ jobs:
         run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
       - name: Add Rust to PATH
-        run: echo "::add-path::${HOME}/.cargo/bin"
+        run: echo "${HOME}/.cargo/bin" >> $GITHUB_PATH
 
       - name: Configure Cargo credentials
         run: |
