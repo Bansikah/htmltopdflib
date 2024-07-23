@@ -44,10 +44,10 @@ jobs:
       - name: Configure Cargo credentials
         run: |
           mkdir -p ~/.cargo
-          echo '[registries.crates-io]' > ~/.cargo/config
-          echo 'token = "${{ secrets.CARGO_REGISTRY_TOKEN }}"' >> ~/.cargo/config
+          echo '[registries.crates-io]' > ~/.cargo/config.toml
+          echo 'token = "${{ secrets.CARGO_REGISTRY_TOKEN }}"' >> ~/.cargo/config.toml
 
       - name: Publish to crates.io
-        run: cargo publish --release
+        run: cargo publish
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
