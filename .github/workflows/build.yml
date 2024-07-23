@@ -12,19 +12,48 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: write
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Rust
+        uses: actions/setup-rust@v1
+        with:
+          rust-version: '0.1.0'  # Replace with the version of Rust you're using
+
       - name: Install cargo-credential
         run: cargo install cargo-credential
+
       - name: Store Cargo credentials
         run: |
           cargo credential add --registry crates.io ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
       - name: Build release
         run: cargo build --release
+
       - name: Test release (optional)
         run: cargo test --release  # Uncomment to run tests
+
+  push_release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Rust
+        uses: actions/setup-rust@v1
+        with:
+          rust-version: '0.1.0'  # Replace with the version of Rust you're using
+
+      - name: Install cargo-credential
+        run: cargo install cargo-credential
+
+      - name: Store Cargo credentials
+        run: |
+          cargo credential add --registry crates.io ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
       - name: Publish to crates.io
         run: cargo publish --release
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
