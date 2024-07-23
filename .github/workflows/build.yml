@@ -19,9 +19,9 @@ jobs:
         with:
           node-version: '16'  # Choose a Node.js version compatible with rustup
       - name: Install Rustup
-        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -y  # Added -y flag
       - name: Install stable Rust
-        run: rustup install stable
+        run: rustup install stable  # Install specific version (optional)
       - name: Configure Cargo credentials
         run: |
           mkdir -p ~/.cargo
