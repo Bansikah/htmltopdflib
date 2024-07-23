@@ -3,6 +3,10 @@ name = "html_to_pdf_lib"
 version = "0.1.0"
 edition = "2021"
 
+# Required fields
+description = "A library for converting HTML to PDF."
+license = "MIT"
+
 [dependencies]
 printpdf = "0.7.0"  # Use a version known to work
 scraper = "0.12.0"
