@@ -1,6 +1,9 @@
 # Convert HTML to pdf library Rust
 This repository contains the htmltopdf Rust library, which converts HTML to PDF. Below are instructions for integrating and using this library in different environments.
 
+## Action Status
+![Build-status](https://github.com/Bansikah/htmltopdflib/actions/workflows/build.yml/badge.svg?event=push)
+
 ## Prerequisites
 
 - Rust installed on your system
